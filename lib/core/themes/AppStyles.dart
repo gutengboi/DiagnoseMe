@@ -1,5 +1,5 @@
-import 'package:covtrack/core/themes/AppColors.dart';
 import 'package:flutter/material.dart';
+import 'AppColors.dart';
 
 class AppStyles {
   static of(BuildContext context) {

@@ -1,7 +1,7 @@
+import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:diagnose_me/screens/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:diagnose_me/components/colors.dart';
 
 class SignupPage extends StatelessWidget {
   @override
@@ -12,16 +12,17 @@ class SignupPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/image/piq.jpeg'), fit: BoxFit.cover)),
+                    image: AssetImage('assets/image/piq.jpeg'),
+                    fit: BoxFit.cover)),
           ),
           Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  Colors.transparent,
-                  Colors.transparent,
-                  Color(0xff161d27).withOpacity(0.9),
-                  Color(0xff161d27),
-                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+              Colors.transparent,
+              Colors.transparent,
+              Color(0xff161d27).withOpacity(0.9),
+              Color(0xff161d27),
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           ),
           Center(
             child: Column(
@@ -40,7 +41,9 @@ class SignupPage extends StatelessWidget {
                 Text(
                   "Let's Sign Up",
                   style: TextStyle(
-                      color: colors, fontSize: 14, fontWeight: FontWeight.bold),
+                      color: AppColors.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 20,
@@ -57,10 +60,10 @@ class SignupPage extends StatelessWidget {
                       fillColor: Color(0xff161d27).withOpacity(0.9),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                     ),
                   ),
                 ),
@@ -79,10 +82,10 @@ class SignupPage extends StatelessWidget {
                       fillColor: Color(0xff161d27).withOpacity(0.9),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                     ),
                   ),
                 ),
@@ -102,10 +105,10 @@ class SignupPage extends StatelessWidget {
                       fillColor: Color(0xff161d27).withOpacity(0.9),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                     ),
                   ),
                 ),
@@ -118,7 +121,7 @@ class SignupPage extends StatelessWidget {
                   margin: EdgeInsets.only(left: 40, right: 40),
                   child: FlatButton(
                     onPressed: () {},
-                    color: colors,
+                    color: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -145,16 +148,18 @@ class SignupPage extends StatelessWidget {
                       width: 8,
                     ),
                     InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginPage()));
-                      },
-                      child: Text(
-                      "Sign in",
-                      style:
-                      TextStyle(color: colors, fontWeight: FontWeight.bold),
-                    )),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
+                        },
+                        child: Text(
+                          "Sign in",
+                          style: TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold),
+                        )),
                   ],
                 ),
                 SizedBox(

@@ -1,10 +1,10 @@
-import 'package:covtrack/core/themes/AppColors.dart';
-import 'package:covtrack/core/themes/AppStyles.dart';
-import 'package:covtrack/core/widgets/progressindicator.dart';
+import 'package:diagnose_me/core/themes/AppColors.dart';
+import 'package:diagnose_me/core/themes/AppStyles.dart';
 import 'package:flutter/material.dart';
 
 import 'DialogLoading.dart';
 import 'SuccessDialog.dart';
+import 'progressindicator.dart';
 //import 'package:workmanager/workmanager.dart';
 
 class GeneralWidgets {

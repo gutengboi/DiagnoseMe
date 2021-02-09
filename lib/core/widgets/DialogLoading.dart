@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:covtrack/core/themes/AppColors.dart';
+import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:flutter/material.dart';
 
 class DialogLoading extends StatefulWidget {
@@ -21,9 +20,9 @@ class _DialogLoadingState extends State<DialogLoading>
   @override
   void initState() {
     super.initState();
-    _controller =
-        AnimationController(duration: Duration(seconds: 5), vsync: this)
-          ..repeat();
+    // _controller =
+    //     AnimationController(duration: Duration(seconds: 5), vsync: this)
+    //       ..repeat();
   }
 
   @override

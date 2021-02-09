@@ -1,7 +1,7 @@
+import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnose_me/screens/login_page.dart';
 import 'dart:async';
-import 'package:diagnose_me/components/appColor.dart';
 import 'package:diagnose_me/components/backgroundView.dart';
 
 class WalkThroughScreen extends StatefulWidget {
@@ -47,10 +47,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   }
 
   Widget build(BuildContext context) {
-    double screenSizeHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double screenSizeHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       top: false,
       bottom: false,
@@ -97,10 +94,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   }
 
   Widget firstScreen(BuildContext context) {
-    double screenSizeHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double screenSizeHeight = MediaQuery.of(context).size.height;
     //  double  screenSizeWidth = MediaQuery.of(context).size.width ;
     return SafeArea(
       top: false,
@@ -146,7 +140,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                                   color: AppColors.white))),
                       SizedBox(height: 12),
                       Container(
-                        // alignment: Alignment.centerLeft,
+                          // alignment: Alignment.centerLeft,
                           width: 251,
                           margin: EdgeInsets.only(left: 25),
                           child: Text(
@@ -167,10 +161,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   }
 
   Widget secondScreen(BuildContext context) {
-    double screenSizeHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double screenSizeHeight = MediaQuery.of(context).size.height;
     //  double  screenSizeWidth = MediaQuery.of(context).size.width ;
     return SafeArea(
       top: false,
@@ -215,7 +206,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                                   color: AppColors.white))),
                       SizedBox(height: 12),
                       Container(
-                        // alignment: Alignment.centerLeft,
+                          // alignment: Alignment.centerLeft,
                           width: 251,
                           margin: EdgeInsets.only(left: 25),
                           child: Text(
@@ -236,10 +227,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
   }
 
   Widget thirdScreen(BuildContext context) {
-    double screenSizeHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double screenSizeHeight = MediaQuery.of(context).size.height;
     //  double  screenSizeWidth = MediaQuery.of(context).size.width ;
     return SafeArea(
       top: false,
@@ -284,7 +272,7 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
                                   color: AppColors.white))),
                       SizedBox(height: 12),
                       Container(
-                        // alignment: Alignment.centerLeft,
+                          // alignment: Alignment.centerLeft,
                           width: 251,
                           margin: EdgeInsets.only(left: 25),
                           child: Text(
@@ -304,8 +292,8 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
     );
   }
 
-  Widget pageViewDots(BuildContext context, bool dotCount1, bool dotCount2,
-      bool dotCount3,
+  Widget pageViewDots(
+      BuildContext context, bool dotCount1, bool dotCount2, bool dotCount3,
       {int activeIndex, Function onClick}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25),
@@ -331,25 +319,25 @@ class _WalkThroughScreenState extends State<WalkThroughScreen> {
           ]),
           dotCount3
               ? InkWell(
-            onTap: onClick,
-            child: Container(
-              child: Text("Continue",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      color: AppColors.white)),
-            ),
-          )
+                  onTap: onClick,
+                  child: Container(
+                    child: Text("Continue",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: AppColors.white)),
+                  ),
+                )
               : InkWell(
-            onTap: onClick,
-            child: Container(
-              child: Text("Skip",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      color: AppColors.white)),
-            ),
-          ),
+                  onTap: onClick,
+                  child: Container(
+                    child: Text("Skip",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: AppColors.white)),
+                  ),
+                ),
         ],
       ),
     );

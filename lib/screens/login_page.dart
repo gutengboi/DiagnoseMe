@@ -1,8 +1,11 @@
+import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:diagnose_me/components/colors.dart';
+
 import 'package:diagnose_me/screens/signup_page.dart';
 import 'package:diagnose_me/screens/navScreen.dart';
+
+import 'Home/HomeScreen.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -13,7 +16,8 @@ class LoginPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/image/piq.jpeg'), fit: BoxFit.cover)),
+                    image: AssetImage('assets/image/piq.jpeg'),
+                    fit: BoxFit.cover)),
           ),
           Container(
             decoration: BoxDecoration(
@@ -41,7 +45,9 @@ class LoginPage extends StatelessWidget {
                 Text(
                   "Let's Sign in",
                   style: TextStyle(
-                      color: colors, fontSize: 14, fontWeight: FontWeight.bold),
+                      color: AppColors.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 20,
@@ -58,10 +64,10 @@ class LoginPage extends StatelessWidget {
                       fillColor: Color(0xff161d27).withOpacity(0.9),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                     ),
                   ),
                 ),
@@ -81,10 +87,10 @@ class LoginPage extends StatelessWidget {
                       fillColor: Color(0xff161d27).withOpacity(0.9),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: colors)),
+                          borderSide: BorderSide(color: AppColors.primary)),
                     ),
                   ),
                 ),
@@ -95,7 +101,9 @@ class LoginPage extends StatelessWidget {
                   "Forgot Password?",
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                      color: colors, fontSize: 14, fontWeight: FontWeight.bold),
+                      color: AppColors.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 20,
@@ -108,9 +116,10 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NavScreen()));
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
                     },
-                    color: colors,
+                    color: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -140,12 +149,14 @@ class LoginPage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignupPage()));
+                            MaterialPageRoute(
+                                builder: (context) => SignupPage()));
                       },
                       child: Text(
                         "Sign up",
-                        style:
-                            TextStyle(color: colors, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold),
                       ),
                     )
                   ],

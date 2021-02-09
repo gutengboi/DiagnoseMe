@@ -1,4 +1,4 @@
-import 'package:covtrack/core/themes/AppColors.dart';
+import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:flutter/material.dart';
 
 class DialogLogOut extends StatelessWidget {
