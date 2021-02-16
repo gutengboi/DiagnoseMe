@@ -265,7 +265,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget testKitCard() {
     return InkWell(
-      onTap: displayDiagnoseScreen,
+      onTap: () {
+        showTCDialog();
+      },
       child: Container(
         // width: MediaQuery.of(context).size.width,
         height: 65,
@@ -431,5 +433,99 @@ class _HomeScreenState extends State<HomeScreen> {
   displayDiagnoseScreen() async {
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => DiagnoseScreen()));
+  }
+
+  showTCDialog() async {
+    showDialog(
+        context: context, builder: (BuildContext context) => termAndConditon());
+  }
+
+  Widget termAndConditon() {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                    icon: Icon(Icons.close),
+                    color: Colors.black,
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    }),
+              ),
+              Container(
+                margin: EdgeInsets.only(right: 20, left: 20),
+                child: Text(
+                  "Kindly Answer the Question below with Yes or No.",
+                  style: TextStyle(fontSize: 15),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(child: Text("")),
+              SizedBox(height: 7),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(
+                        left: 30.0,
+                        right: 10.0,
+                        top: 30,
+                        bottom: 20,
+                      ),
+                      child: FlatButton(
+                        onPressed: () async {},
+                        child: Text(
+                          "YES",
+                        ),
+                        color: AppColors.primary,
+                        textColor: Colors.white,
+//                      shape: RoundedRectangleBorder(
+//                        borderRadius: BorderRadius.circular(6.0),
+//                      ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(
+                        left: 10.0,
+                        right: 30.0,
+                        top: 30,
+                        bottom: 20,
+                      ),
+                      child: FlatButton(
+                        onPressed: () async {},
+                        child: Text(
+                          "NO",
+                        ),
+                        color: AppColors.accent,
+                        textColor: Colors.white,
+//                      shape: RoundedRectangleBorder(
+//                        borderRadius: BorderRadius.circular(6.0),
+//                      ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

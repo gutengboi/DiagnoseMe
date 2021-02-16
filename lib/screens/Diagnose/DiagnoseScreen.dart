@@ -154,30 +154,29 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  width: double.infinity,
-                  //  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  AilmentScreen(model: counterList)));
-                    },
-                    elevation: 0,
-                    color: Colors.purple,
-                    textColor: Colors.white,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AilmentScreen(model: counterList)));
+                  },
+                  child: Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    margin: EdgeInsets.all(30),
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(color: Colors.yellowAccent),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: AppColors.primary12,
                     ),
                     child: Text(
                       "Continue",
                       style: TextStyle(
-                          fontSize: 12,
+                          color: AppColors.white,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Source Sans Pro'),
                     ),
@@ -194,15 +193,15 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
     );
   }
 
-  displayTestKitScreen() async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => DiagnoseScreen()));
-  }
+  // displayTestKitScreen() async {
+  //   await Navigator.of(context)
+  //       .push(MaterialPageRoute(builder: (context) => DiagnoseScreen()));
+  // }
 
-  displayMap() async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => DiagnoseScreen()));
-  }
+  // displayMap() async {
+  //   await Navigator.of(context)
+  //       .push(MaterialPageRoute(builder: (context) => DiagnoseScreen()));
+  // }
 
   void changeIndex(int index) {
     setState(() {

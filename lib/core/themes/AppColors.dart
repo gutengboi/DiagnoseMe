@@ -12,4 +12,5 @@ class AppColors {
   static Color black = Colors.black;
   static Color grey = Color(0xFFA7A7A7);
   static Color titleGreen = Color(0xFF4C9F43);
+  static Color accent = Colors.amberAccent;
 }

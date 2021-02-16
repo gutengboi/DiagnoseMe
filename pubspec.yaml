@@ -32,6 +32,10 @@ dependencies:
   google_fonts: ^1.1.2
   animated_button:
   # image_picker: ^0.6.6+5
+  firebase_auth: ^0.20.0+1
+  firebase_dynamic_links: ^0.5.1
+  sqflite: any
+
 
 dev_dependencies:
   flutter_test:
