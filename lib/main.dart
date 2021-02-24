@@ -1,5 +1,6 @@
 import 'file:///C:/Users/user/AndroidStudioProjects/diagnose_me/lib/slide/splashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:diagnose_me/screens/login_page.dart';
 
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashScreen(),
+      home: LoginPage(),
     );
   }
 }
