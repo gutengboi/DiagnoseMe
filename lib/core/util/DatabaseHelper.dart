@@ -24,6 +24,7 @@ class DBProvider {
     if (oldVersion < newVersion) {
       await db.execute("DROP TABLE IF EXISTS ${Constant.AILMENTS}");
       await db.execute("DROP TABLE IF EXISTS ${Constant.CAUSES}");
+      await db.execute("DROP TABLE IF EXISTS ${Constant.SYMPTOMS}");
       _onCreate(db, newVersion);
     }
   }
@@ -47,15 +48,93 @@ class DBProvider {
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "ailmentName TEXT,"
         "treatment TEXT,"
-        "causes TEXT,"
         "prevention TEXT,"
+        "dosage TEXT"
         ")");
 
     await db.execute("CREATE TABLE ${Constant.SYMPTOMS} ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "symtomsName TEXT,"
-        "weight TEXT,"
+        "symptomsName TEXT,"
+        "weight TEXT"
+        "almentId INTEGER"
+        ")");
+
+    await db.execute("CREATE TABLE ${Constant.CAUSES} ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "causeName TEXT,"
         "ailmentid INTEGER"
         ")");
   }
+
+  // Future<String> getCustomerString(User user) async {
+  //   try {
+  //     final db = await database;
+  //     List customer = await queryAllRows(Constant.PROFILE_TABLE);
+  //     if (customer.length < 1) {
+  //       var raw = insert(user);
+  //       return "${raw.toString()}";
+  //     } else {
+  //       print("customer.length  ${customer.length.toString()}");
+  //       return customer.length.toString();
+  //     }
+  //   } on Exception catch (e) {
+  //     print("exception ${e.toString()}");
+  //     return null;
+  //   }
+  // }
+  //
+  // insert(User user) async {
+  //   final db = await database;
+  //   var raw = await db.insert(Constant.PROFILE_TABLE, user.toJson());
+  //   print("after insert :: $raw");
+  //   print("Before Insert ::: ${user.toJson()}");
+  //   return raw;
+  // }
+  //
+  // insertRequestType(GetType type) async {
+  //   print("eBefore Insert request type ::: ${type.toJson()}");
+  //   final db = await database;
+  //   var raw = await db.insert(Constant.REQUEST_TYPE, type.toJson());
+  //   print("after insert  request type :: $raw");
+  //   return raw;
+  // }
+  //
+  // Future<List<GetType>> getRequestType() async {
+  //   try {
+  //     final db = await database;
+  //     List<GetType> getTypes = [];
+  //     var res = await db.rawQuery("SELECT * FROM ${Constant.REQUEST_TYPE} ");
+  //     print("length ${res.length}");
+  //     if (res.length > 0) {
+  //       for (var rs in res) {
+  //         getTypes.add(GetType.fromJson(rs));
+  //       }
+  //       return getTypes;
+  //     } else {
+  //       return null;
+  //     }
+  //   } on Exception catch (e) {
+  //     print("exception ${e.toString()}");
+  //     return null;
+  //   }
+  // }
+  //
+  // Future<User> getData(String tableName) async {
+  //   try {
+  //     final db = await database;
+  //     var res = await db.rawQuery("SELECT * FROM $tableName ");
+  //     print(jsonEncode(res));
+  //     if (res.length > 0) {
+  //       print("####################");
+  //       print("first ::: ${res.first}");
+  //       return User.fromJson(res.first);
+  //     } else {
+  //       print("rawQuery 111111");
+  //       return null;
+  //     }
+  //   } on Exception catch (e) {
+  //     print("exception ${e.toString()}");
+  //     return null;
+  //   }
+  // }
 }

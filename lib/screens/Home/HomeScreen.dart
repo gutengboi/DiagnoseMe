@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 
+import 'package:diagnose_me/core/model/diagnose.dart';
 import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:diagnose_me/screens/Diagnose/DiagnoseScreen.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController _pageController = PageController();
   Timer autoScrollTimer;
   int activeSlide = 0;
+
+  List<Answer> answer = List<Answer>();
 
 //  Future displayCountry() async {
 //    await Navigator.of(context)
@@ -134,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 40,
                 ),
-                testKitCard(),
+                testKitCard(context),
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(top: 0),
@@ -263,10 +269,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget testKitCard() {
+  Widget testKitCard(BuildContext context) {
     return InkWell(
       onTap: () {
-        showTCDialog();
+        openDiagnoseDialog(context);
       },
       child: Container(
         // width: MediaQuery.of(context).size.width,
@@ -361,7 +367,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return testKitCard(); //InkWell(onTap: () {}, child: menuRow(index));
+          return testKitCard(
+              context); //InkWell(onTap: () {}, child: menuRow(index));
         },
       ),
     );
@@ -435,97 +442,323 @@ class _HomeScreenState extends State<HomeScreen> {
         .push(MaterialPageRoute(builder: (context) => DiagnoseScreen()));
   }
 
-  showTCDialog() async {
-    showDialog(
-        context: context, builder: (BuildContext context) => termAndConditon());
-  }
+//   Widget termAndConditon(BuildContext context) {
+//     return WillPopScope(
+//       onWillPop: () async => false,
+//       child: Dialog(
+//           shape:
+//               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//           insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+//           child: StatefulBuilder(
+//               builder: (BuildContext context, StateSetter setState) {
+//             return Container(
+//               height: MediaQuery.of(context).size.height,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 children: <Widget>[
+//                   Container(
+//                     alignment: Alignment.topRight,
+//                     child: IconButton(
+//                         icon: Icon(Icons.close),
+//                         color: Colors.black,
+//                         onPressed: () {
+//                           Navigator.pop(context, false);
+//                         }),
+//                   ),
+//                   Container(
+//                     margin: EdgeInsets.only(right: 20, left: 20),
+//                     child: Text(
+//                       "Kindly Answer the Question below with Yes or No.",
+//                       style: TextStyle(fontSize: 15),
+//                       textAlign: TextAlign.center,
+//                     ),
+//                   ),
+//                   SizedBox(
+//                     height: 20,
+//                   ),
+//                   Expanded(
+//                     child: Container(
+//                       alignment: Alignment.center,
+//                       margin: EdgeInsets.only(left: 10, right: 10),
+//                       child: DottedBorder(
+//                         dashPattern: [6, 3, 2, 3],
+//                         padding: EdgeInsets.all(4),
+//                         borderType: BorderType.RRect,
+//                         child: Container(
+//                           alignment: Alignment.center,
+//                           height: 170,
+//                           child: Text(
+//                             "$question",
+//                             textAlign: TextAlign.center,
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   SizedBox(height: 7),
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: <Widget>[
+//                       Expanded(
+//                         child: Container(
+//                           width: double.infinity,
+//                           padding: EdgeInsets.only(
+//                             left: 30.0,
+//                             right: 10.0,
+//                             top: 30,
+//                             bottom: 20,
+//                           ),
+//                           child: FlatButton(
+//                             onPressed: () async {
+//                               int random =
+//                                   Random().nextInt(symptomsItems.length);
+//                               String questionItems =
+//                                   symptomsItems.elementAt(random).symptomsName;
+//                               setState(() {
+//                                 questionCounter++;
+//                                 question = questionItems;
+//                               });
+//                             },
+//                             child: Text(
+//                               "YES",
+//                             ),
+//                             color: AppColors.primary,
+//                             textColor: Colors.white,
+// //                      shape: RoundedRectangleBorder(
+// //                        borderRadius: BorderRadius.circular(6.0),
+// //                      ),
+//                           ),
+//                         ),
+//                       ),
+//                       Expanded(
+//                         child: Container(
+//                           width: double.infinity,
+//                           padding: EdgeInsets.only(
+//                             left: 10.0,
+//                             right: 30.0,
+//                             top: 30,
+//                             bottom: 20,
+//                           ),
+//                           child: FlatButton(
+//                             onPressed: () async {
+//                               int random =
+//                                   Random().nextInt(symptomsItems.length);
+//                               //questionCounter =  random  ;
+//                               String questionItems =
+//                                   symptomsItems.elementAt(random).symptomsName;
+//                               setState(() {
+//                                 questionCounter++;
+//                                 question = questionItems;
+//                               });
+//                             },
+//                             child: Text(
+//                               "NO",
+//                             ),
+//                             color: AppColors.accent,
+//                             textColor: Colors.white,
+// //                      shape: RoundedRectangleBorder(
+// //                        borderRadius: BorderRadius.circular(6.0),
+// //                      ),
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//             );
+//           })),
+//     );
+//   }
 
-  Widget termAndConditon() {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                    icon: Icon(Icons.close),
-                    color: Colors.black,
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    }),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 20, left: 20),
-                child: Text(
-                  "Kindly Answer the Question below with Yes or No.",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(child: Text("")),
-              SizedBox(height: 7),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(
-                        left: 30.0,
-                        right: 10.0,
-                        top: 30,
-                        bottom: 20,
+  openDiagnoseDialog(
+    BuildContext context,
+  ) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        SYMPTOM symptoms = SYMPTOM();
+        String question = "Start";
+
+        int random = Random().nextInt(symptomsItems.length);
+        symptoms = symptomsItems.elementAt(random);
+
+        String questionItems = symptoms.symptomsName;
+        question = questionItems;
+        print("::::::::::$questionItems::::::::::::::");
+        print("::::::::::$random::::::::::::::");
+        print("::::::::::${symptomsItems.length}::::::::::::::");
+
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
+              child: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                            icon: Icon(Icons.close),
+                            color: Colors.black,
+                            onPressed: () {
+                              Navigator.pop(context, false);
+                            }),
                       ),
-                      child: FlatButton(
-                        onPressed: () async {},
+                      Container(
+                        margin: EdgeInsets.only(right: 20, left: 20),
                         child: Text(
-                          "YES",
+                          "Kindly Answer the Question below with Yes or No.",
+                          style: TextStyle(fontSize: 15),
+                          textAlign: TextAlign.center,
                         ),
-                        color: AppColors.primary,
-                        textColor: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(left: 10, right: 10),
+                          child: DottedBorder(
+                            dashPattern: [6, 3, 2, 3],
+                            padding: EdgeInsets.all(4),
+                            borderType: BorderType.RRect,
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 20, right: 20),
+                                  alignment: Alignment.center,
+                                  height: 170,
+                                  child: Text(
+                                    "Do you suffer from $question",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 7),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.only(
+                                left: 30.0,
+                                right: 10.0,
+                                top: 30,
+                                bottom: 20,
+                              ),
+                              child: FlatButton(
+                                onPressed: () async {
+                                  Answer newAnswer = Answer(
+                                      ailmentId: symptoms.ailmentid,
+                                      symptomId: symptoms.id,
+                                      answer: true);
+                                  answer.add(newAnswer);
+                                  print(
+                                      "::::::::RANDOM:::::::::::$random:::::::::RANDOM::::::::");
+                                  random++;
+
+                                  // if (random > symptomsItems.length) {
+                                  //   setState(() {
+                                  //     random--;
+                                  //   });
+                                  // }
+
+                                  setState(() {
+                                    symptoms = symptomsItems
+                                        .where((element) =>
+                                            element.ailmentid ==
+                                            symptoms.ailmentid)
+                                        .elementAt(random);
+
+                                    //symptoms = symptomsItems.elementAt(questionCounter);
+
+                                    question = symptoms.symptomsName;
+                                  });
+                                },
+                                child: Text(
+                                  "YES",
+                                ),
+                                color: AppColors.primary,
+                                textColor: Colors.white,
 //                      shape: RoundedRectangleBorder(
 //                        borderRadius: BorderRadius.circular(6.0),
 //                      ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.only(
-                        left: 10.0,
-                        right: 30.0,
-                        top: 30,
-                        bottom: 20,
-                      ),
-                      child: FlatButton(
-                        onPressed: () async {},
-                        child: Text(
-                          "NO",
-                        ),
-                        color: AppColors.accent,
-                        textColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.only(
+                                left: 10.0,
+                                right: 30.0,
+                                top: 30,
+                                bottom: 20,
+                              ),
+                              child: FlatButton(
+                                onPressed: () async {
+                                  Answer newAnswer = Answer(
+                                      ailmentId: symptoms.ailmentid,
+                                      symptomId: symptoms.id,
+                                      answer: false);
+                                  answer.add(newAnswer);
+
+                                  random++;
+                                  print(
+                                      "::::::::RANDOM:::::::::::$random:::::::::RANDOM::::::::");
+
+                                  // if (random > symptomsItems.length) {
+                                  //   setState(() {
+                                  //     random--;
+                                  //   });
+                                  // }
+
+                                  setState(() {
+                                    symptoms = symptomsItems
+                                        .where((element) =>
+                                            element.ailmentid ==
+                                            symptoms.ailmentid)
+                                        .elementAt(random);
+
+                                    //symptoms = symptomsItems.elementAt(questionCounter);
+                                    question = symptoms.symptomsName;
+                                  });
+                                },
+                                child: Text(
+                                  "NO",
+                                ),
+                                color: AppColors.accent,
+                                textColor: Colors.white,
 //                      shape: RoundedRectangleBorder(
 //                        borderRadius: BorderRadius.circular(6.0),
 //                      ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+                );
+              }));
+        });
+      },
     );
   }
 }
