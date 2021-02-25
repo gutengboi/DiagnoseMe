@@ -45,15 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
   //   await Navigator.of(context)
   //       .push(MaterialPageRoute(builder: (context) => MappingScreen()));
   // }
-  var oneSec = const Duration(seconds: 1);
+  var oneSec = const Duration(seconds: 3);
   @override
   void initState() {
     super.initState();
     new Timer.periodic(oneSec, (Timer t) {
       int rand = Random().nextInt(symptomsItems.length);
       print("::::$rand:::::");
+      print(":::DateTime::::${DateTime.now().day}::::::::");
       setState(() {
-        QuoteOfTheday = symptomsItems[rand].symptomsName;
+        QuoteOfTheday = healthTips[rand];
       });
     });
   }
@@ -192,19 +193,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String getDay(int day) {
-    if (day == 1) {
+    if (day == 7) {
       return "Sunday";
-    } else if (day == 2) {
+    } else if (day == 1) {
       return "Monday";
-    } else if (day == 3) {
+    } else if (day == 2) {
       return "Tuesday";
-    } else if (day == 4) {
+    } else if (day == 3) {
       return "Wednesday";
-    } else if (day == 5) {
+    } else if (day == 4) {
       return "Thursday";
-    } else if (day == 6) {
+    } else if (day == 5) {
       return "Friday";
-    } else if (day == 7) {
+    } else if (day == 6) {
       return "Saturday";
     } else {
       return "Saturday";
@@ -243,57 +244,54 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  "${getDay(DateTime.now().day)} Health Tips",
+                  "${getDay(DateTime.now().weekday)} Health Tips",
                   style: TextStyle(
                       color: AppColors.primary15,
                       fontSize: 12,
                       fontWeight: FontWeight.normal),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text("$QuoteOfTheday"),
-                    ),
-                  ],
-                ),
+
+              Expanded(
+                child: Container(
+                    alignment: Alignment.center,
+                    child: Text("$QuoteOfTheday",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: AppColors.primary15,
+                            fontWeight: FontWeight.bold))),
               ),
               SizedBox(
                 height: 20,
               ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: IconButton(
-                        icon: Icon(Icons.play_circle_fill_outlined),
-                        color: Colors.white,
-                        onPressed: () {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: IconButton(
-                        icon: Icon(Icons.play_circle_fill_outlined),
-                        color: Colors.white,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              // Container(
+              //   alignment: Alignment.bottomCenter,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Container(
+              //         margin: EdgeInsets.all(5),
+              //         child: IconButton(
+              //           icon: Icon(Icons.play_circle_fill_outlined),
+              //           color: Colors.white,
+              //           onPressed: () {},
+              //         ),
+              //       ),
+              //       SizedBox(
+              //         width: 10,
+              //       ),
+              //       Container(
+              //         margin: EdgeInsets.all(5),
+              //         child: IconButton(
+              //           icon: Icon(Icons.play_circle_fill_outlined),
+              //           color: Colors.white,
+              //           onPressed: () {},
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),
