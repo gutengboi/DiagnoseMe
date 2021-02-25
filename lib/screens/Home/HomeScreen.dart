@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:diagnose_me/core/model/diagnose.dart';
 import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:diagnose_me/screens/Diagnose/DiagnoseScreen.dart';
+import 'package:diagnose_me/screens/Home/TestResultScreen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
   int activeSlide = 0;
 
   List<Answer> answer = List<Answer>();
-
+  List<bool> negative = List<bool>();
+  List<bool> positive = List<bool>();
+  double positiveWeight = 0.0;
+  double negativeWeight = 0.0;
+  String QuoteOfTheday = "Quote of the day";
 //  Future displayCountry() async {
 //    await Navigator.of(context)
 //        .push(MaterialPageRoute(builder: (context) => CountryScreen()))
@@ -40,10 +45,17 @@ class _HomeScreenState extends State<HomeScreen> {
   //   await Navigator.of(context)
   //       .push(MaterialPageRoute(builder: (context) => MappingScreen()));
   // }
-
+  var oneSec = const Duration(seconds: 1);
   @override
   void initState() {
     super.initState();
+    new Timer.periodic(oneSec, (Timer t) {
+      int rand = Random().nextInt(symptomsItems.length);
+      print("::::$rand:::::");
+      setState(() {
+        QuoteOfTheday = symptomsItems[rand].symptomsName;
+      });
+    });
   }
 
   @override
@@ -179,6 +191,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  String getDay(int day) {
+    if (day == 1) {
+      return "Sunday";
+    } else if (day == 2) {
+      return "Monday";
+    } else if (day == 3) {
+      return "Tuesday";
+    } else if (day == 4) {
+      return "Wednesday";
+    } else if (day == 5) {
+      return "Thursday";
+    } else if (day == 6) {
+      return "Friday";
+    } else if (day == 7) {
+      return "Saturday";
+    } else {
+      return "Saturday";
+    }
+  }
+
   Widget corvidInfoCard() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -211,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  "Monday Health Tips",
+                  "${getDay(DateTime.now().day)} Health Tips",
                   style: TextStyle(
                       color: AppColors.primary15,
                       fontSize: 12,
@@ -227,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Text("Testing Testing Testing"),
+                      child: Text("$QuoteOfTheday"),
                     ),
                   ],
                 ),
@@ -664,11 +696,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               child: FlatButton(
                                 onPressed: () async {
-                                  Answer newAnswer = Answer(
-                                      ailmentId: symptoms.ailmentid,
-                                      symptomId: symptoms.id,
-                                      answer: true);
-                                  answer.add(newAnswer);
                                   print(
                                       "::::::::RANDOM:::::::::::$random:::::::::RANDOM::::::::");
                                   random++;
@@ -678,18 +705,122 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //     random--;
                                   //   });
                                   // }
+                                  List<SYMPTOM> _symptoms = symptomsItems
+                                      .where((element) =>
+                                          element.ailmentid ==
+                                          symptoms.ailmentid)
+                                      .toList();
 
-                                  setState(() {
-                                    symptoms = symptomsItems
-                                        .where((element) =>
-                                            element.ailmentid ==
-                                            symptoms.ailmentid)
-                                        .elementAt(random);
+                                  print(
+                                      "::::::::SYMPTOM:::::::::::${_symptoms.length}:::::::::SYMPTOM::::::::");
+                                  if (random < _symptoms.length) {
+                                    setState(() {
+                                      symptoms = _symptoms.elementAt(random);
+                                      question = symptoms.symptomsName;
+                                      // .elementAt(random) ??
+                                      //null;
+                                      //symptoms = symptomsItems.elementAt(questionCounter);
+                                    });
+                                    Answer newAnswer = Answer(
+                                        ailmentId: symptoms.ailmentid,
+                                        symptomId: symptoms.id,
+                                        weight: symptoms.weight,
+                                        answer: true);
+                                    answer.add(newAnswer);
+                                  } else {
+                                    print(
+                                        "::::::_symptoms::::${_symptoms.length}:::F::::::");
+                                    print(
+                                        ":::::answer:::::${answer.length}:::::G::::");
+                                    if (answer.length >= _symptoms.length) {
+                                    } else if (answer.length ==
+                                        _symptoms.length) {
+                                      print(":::::I AM INSIDE 1");
+                                      for (var i in answer) {
+                                        if (i.answer) {
+                                          positiveWeight += i.weight;
+                                          positive.add(i.answer);
+                                        } else {
+                                          negativeWeight += i.weight;
+                                          negative.add(i.answer);
+                                        }
+                                      }
+                                      if (positive.length == negative.length) {
+                                        print(":::::I AM INSIDE NEGATIVE");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else if (positiveWeight ==
+                                          negativeWeight) {
+                                        print(":::::I AM INSIDE WEIGHT");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else {
+                                        print(":::::LAST BUST STOP");
+                                        if (positiveWeight > negativeWeight) {
+                                          //Decide result
+                                          print(
+                                              ":::::1::::$positiveWeight::::2:::::");
+                                          print(
+                                              ":::::3:::::$negativeWeight::::4:::::");
 
-                                    //symptoms = symptomsItems.elementAt(questionCounter);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else if (positive.length >
+                                            negative.length) {
+                                          //Decide result
 
-                                    question = symptoms.symptomsName;
-                                  });
+                                          print(
+                                              ":::::11::::${positive.length}::::22:::::");
+                                          print(
+                                              ":::::33:::::${negative.length}::::44:::::");
+
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else {
+                                          print("::::KOLEYEWON:::");
+                                        }
+                                      }
+                                    } else {
+                                      print(":::::::NO RAOD AGAIN");
+
+                                      setState(() {
+                                        answer.clear();
+                                        int random = Random()
+                                            .nextInt(symptomsItems.length);
+                                        symptoms =
+                                            symptomsItems.elementAt(random);
+                                        String questionItems =
+                                            symptoms.symptomsName;
+                                        question = questionItems;
+                                      });
+                                    }
+                                  }
                                 },
                                 child: Text(
                                   "YES",
@@ -713,21 +844,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               child: FlatButton(
                                 onPressed: () async {
-                                  Answer newAnswer = Answer(
-                                      ailmentId: symptoms.ailmentid,
-                                      symptomId: symptoms.id,
-                                      answer: false);
-                                  answer.add(newAnswer);
-
                                   random++;
                                   print(
                                       "::::::::RANDOM:::::::::::$random:::::::::RANDOM::::::::");
 
-                                  // if (random > symptomsItems.length) {
-                                  //   setState(() {
-                                  //     random--;
-                                  //   });
-                                  // }
+                                  if (random > symptomsItems.length) {
+                                    setState(() {
+                                      random--;
+                                    });
+                                  }
 
                                   setState(() {
                                     symptoms = symptomsItems
@@ -739,6 +864,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     //symptoms = symptomsItems.elementAt(questionCounter);
                                     question = symptoms.symptomsName;
                                   });
+                                  Answer newAnswer = Answer(
+                                      ailmentId: symptoms.ailmentid,
+                                      symptomId: symptoms.id,
+                                      answer: false);
+                                  answer.add(newAnswer);
                                 },
                                 child: Text(
                                   "NO",

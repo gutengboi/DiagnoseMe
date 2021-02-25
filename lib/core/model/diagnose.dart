@@ -28,8 +28,8 @@ class Answer {
   int symptomId;
   int ailmentId;
   bool answer;
-
-  Answer({this.symptomId, this.ailmentId, this.answer});
+  double weight;
+  Answer({this.symptomId, this.ailmentId, this.answer, this.weight});
 }
 
 List<AILMENT> ailmentItems = [
