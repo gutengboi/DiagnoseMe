@@ -45,16 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
   //   await Navigator.of(context)
   //       .push(MaterialPageRoute(builder: (context) => MappingScreen()));
   // }
-  var oneSec = const Duration(seconds: 3);
+  var oneSec = const Duration(seconds: 5);
+  int counter = 0;
   @override
   void initState() {
     super.initState();
     new Timer.periodic(oneSec, (Timer t) {
       int rand = Random().nextInt(symptomsItems.length);
-      print("::::$rand:::::");
-      print(":::DateTime::::${DateTime.now().day}::::::::");
+      counter++;
+
       setState(() {
-        QuoteOfTheday = healthTips[rand];
+        if (counter > healthTips.length) {
+          counter = 0;
+        }
+        QuoteOfTheday = healthTips[counter];
       });
     });
   }
@@ -640,6 +644,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             icon: Icon(Icons.close),
                             color: Colors.black,
                             onPressed: () {
+                              answer.clear();
+                              symptoms = null;
+
                               Navigator.pop(context, false);
                             }),
                       ),
@@ -698,19 +705,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                       "::::::::RANDOM:::::::::::$random:::::::::RANDOM::::::::");
                                   random++;
 
-                                  // if (random > symptomsItems.length) {
-                                  //   setState(() {
-                                  //     random--;
-                                  //   });
-                                  // }
                                   List<SYMPTOM> _symptoms = symptomsItems
                                       .where((element) =>
                                           element.ailmentid ==
                                           symptoms.ailmentid)
                                       .toList();
 
+                                  if (random > _symptoms.length) {
+                                    setState(() {
+                                      random = 1;
+                                    });
+                                  }
+
                                   print(
-                                      "::::::::SYMPTOM:::::::::::${_symptoms.length}:::::::::SYMPTOM::::::::");
+                                      "::::::::SYMPTOM:::::::::::${symptoms.id}:::::::::SYMPTOM::::::::");
+                                  print(
+                                      "::::::::COUNT SYMPTOM:::::::::::${_symptoms.length}:::::::::SYMPTOM::::::::");
+                                  print(
+                                      "::::::::SECOND RANDOM:::::::::::$random:::::::::RANDOM::::::::");
                                   if (random < _symptoms.length) {
                                     setState(() {
                                       symptoms = _symptoms.elementAt(random);
@@ -807,16 +819,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     } else {
                                       print(":::::::NO RAOD AGAIN");
 
-                                      setState(() {
-                                        answer.clear();
-                                        int random = Random()
-                                            .nextInt(symptomsItems.length);
-                                        symptoms =
-                                            symptomsItems.elementAt(random);
-                                        String questionItems =
-                                            symptoms.symptomsName;
-                                        question = questionItems;
-                                      });
+                                      for (var i in answer) {
+                                        if (i.answer) {
+                                          positiveWeight += i.weight;
+                                          positive.add(i.answer);
+                                        } else {
+                                          negativeWeight += i.weight;
+                                          negative.add(i.answer);
+                                        }
+                                      }
                                     }
                                   }
                                 },
