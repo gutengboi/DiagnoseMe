@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AILMENT {
   int id;
   String ailmentName;
@@ -29,7 +31,13 @@ class Answer {
   int ailmentId;
   bool answer;
   double weight;
-  Answer({this.symptomId, this.ailmentId, this.answer, this.weight});
+  String question;
+  Answer(
+      {this.symptomId,
+      this.ailmentId,
+      this.answer,
+      this.weight,
+      @required this.question});
 }
 
 List<AILMENT> ailmentItems = [

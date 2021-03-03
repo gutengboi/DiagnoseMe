@@ -36,6 +36,7 @@ dependencies:
   firebase_dynamic_links: ^0.5.1
   sqflite: any
   dotted_border: ^1.0.4
+  blinking_text: ^0.0.4+1
 
 
 dev_dependencies:

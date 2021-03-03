@@ -735,7 +735,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ailmentId: symptoms.ailmentid,
                                         symptomId: symptoms.id,
                                         weight: symptoms.weight,
-                                        answer: true);
+                                        answer: false,
+                                        question: question);
                                     answer.add(newAnswer);
                                   } else {
                                     print(
@@ -788,7 +789,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ":::::1::::$positiveWeight::::2:::::");
                                           print(
                                               ":::::3:::::$negativeWeight::::4:::::");
-
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -804,7 +807,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ":::::11::::${positive.length}::::22:::::");
                                           print(
                                               ":::::33:::::${negative.length}::::44:::::");
-
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -817,8 +822,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         }
                                       }
                                     } else {
-                                      print(":::::::NO RAOD AGAIN");
-
                                       for (var i in answer) {
                                         if (i.answer) {
                                           positiveWeight += i.weight;
@@ -826,6 +829,71 @@ class _HomeScreenState extends State<HomeScreen> {
                                         } else {
                                           negativeWeight += i.weight;
                                           negative.add(i.answer);
+                                        }
+                                      }
+                                      if (positive.length == negative.length) {
+                                        print(":::::I AM INSIDE NEGATIVE");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else if (positiveWeight ==
+                                          negativeWeight) {
+                                        print(":::::I AM INSIDE WEIGHT");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else {
+                                        print(":::::LAST BUST STOP");
+                                        if (positiveWeight > negativeWeight) {
+                                          //Decide result
+                                          print(
+                                              ":::::1::::$positiveWeight::::2:::::");
+                                          print(
+                                              ":::::3:::::$negativeWeight::::4:::::");
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else if (positive.length >
+                                            negative.length) {
+                                          //Decide result
+
+                                          print(
+                                              ":::::11::::${positive.length}::::22:::::");
+                                          print(
+                                              ":::::33:::::${negative.length}::::44:::::");
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else {
+                                          print("::::KOLEYEWON:::");
                                         }
                                       }
                                     }
@@ -836,9 +904,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 color: AppColors.primary,
                                 textColor: Colors.white,
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(6.0),
-//                      ),
                               ),
                             ),
                           ),
@@ -854,30 +919,192 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: FlatButton(
                                 onPressed: () async {
                                   random++;
-                                  print(
-                                      "::::::::RANDOM:::::::::::$random:::::::::RANDOM::::::::");
+                                  List<SYMPTOM> _symptoms = symptomsItems
+                                      .where((element) =>
+                                          element.ailmentid ==
+                                          symptoms.ailmentid)
+                                      .toList();
 
-                                  if (random > symptomsItems.length) {
+                                  if (random > _symptoms.length) {
                                     setState(() {
-                                      random--;
+                                      random = 1;
                                     });
                                   }
+                                  if (random < _symptoms.length) {
+                                    setState(() {
+                                      symptoms = _symptoms.elementAt(random);
+                                      question = symptoms.symptomsName;
+                                      // .elementAt(random) ??
+                                      //null;
+                                      //symptoms = symptomsItems.elementAt(questionCounter);
+                                    });
+                                    Answer newAnswer = Answer(
+                                        ailmentId: symptoms.ailmentid,
+                                        symptomId: symptoms.id,
+                                        weight: symptoms.weight,
+                                        answer: false,
+                                        question: question);
+                                    answer.add(newAnswer);
+                                  } else {
+                                    print(
+                                        "::::::_symptoms::::${_symptoms.length}:::F::::::");
+                                    print(
+                                        ":::::answer:::::${answer.length}:::::G::::");
+                                    if (answer.length >= _symptoms.length) {
+                                    } else if (answer.length ==
+                                        _symptoms.length) {
+                                      print(":::::I AM INSIDE 1");
+                                      for (var i in answer) {
+                                        if (i.answer) {
+                                          positiveWeight += i.weight;
+                                          positive.add(i.answer);
+                                        } else {
+                                          negativeWeight += i.weight;
+                                          negative.add(i.answer);
+                                        }
+                                      }
+                                      if (positive.length == negative.length) {
+                                        print(":::::I AM INSIDE NEGATIVE");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else if (positiveWeight ==
+                                          negativeWeight) {
+                                        print(":::::I AM INSIDE WEIGHT");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else {
+                                        print(":::::LAST BUST STOP");
+                                        if (positiveWeight > negativeWeight) {
+                                          //Decide result
+                                          print(
+                                              ":::::1::::$positiveWeight::::2:::::");
+                                          print(
+                                              ":::::3:::::$negativeWeight::::4:::::");
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else if (positive.length >
+                                            negative.length) {
+                                          //Decide result
 
-                                  setState(() {
-                                    symptoms = symptomsItems
-                                        .where((element) =>
-                                            element.ailmentid ==
-                                            symptoms.ailmentid)
-                                        .elementAt(random);
+                                          print(
+                                              ":::::11::::${positive.length}::::22:::::");
+                                          print(
+                                              ":::::33:::::${negative.length}::::44:::::");
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else {
+                                          print("::::KOLEYEWON:::");
+                                        }
+                                      }
+                                    } else {
+                                      for (var i in answer) {
+                                        if (i.answer) {
+                                          positiveWeight += i.weight;
+                                          positive.add(i.answer);
+                                        } else {
+                                          negativeWeight += i.weight;
+                                          negative.add(i.answer);
+                                        }
+                                      }
+                                      if (positive.length == negative.length) {
+                                        print(":::::I AM INSIDE NEGATIVE");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else if (positiveWeight ==
+                                          negativeWeight) {
+                                        print(":::::I AM INSIDE WEIGHT");
+                                        setState(() {
+                                          answer.clear();
+                                          int random = Random()
+                                              .nextInt(symptomsItems.length);
+                                          symptoms =
+                                              symptomsItems.elementAt(random);
+                                          String questionItems =
+                                              symptoms.symptomsName;
+                                          question = questionItems;
+                                        });
+                                      } else {
+                                        print(":::::LAST BUST STOP");
+                                        if (positiveWeight > negativeWeight) {
+                                          //Decide result
+                                          print(
+                                              ":::::1::::$positiveWeight::::2:::::");
+                                          print(
+                                              ":::::3:::::$negativeWeight::::4:::::");
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else if (positive.length >
+                                            negative.length) {
+                                          //Decide result
 
-                                    //symptoms = symptomsItems.elementAt(questionCounter);
-                                    question = symptoms.symptomsName;
-                                  });
-                                  Answer newAnswer = Answer(
-                                      ailmentId: symptoms.ailmentid,
-                                      symptomId: symptoms.id,
-                                      answer: false);
-                                  answer.add(newAnswer);
+                                          print(
+                                              ":::::11::::${positive.length}::::22:::::");
+                                          print(
+                                              ":::::33:::::${negative.length}::::44:::::");
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestResultScreen(
+                                                        response: answer,
+                                                      )));
+                                        } else {
+                                          print("::::KOLEYEWON:::");
+                                        }
+                                      }
+                                    }
+                                  }
                                 },
                                 child: Text(
                                   "NO",
