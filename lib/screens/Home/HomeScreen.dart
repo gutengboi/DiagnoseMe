@@ -735,7 +735,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ailmentId: symptoms.ailmentid,
                                         symptomId: symptoms.id,
                                         weight: symptoms.weight,
-                                        answer: false,
+                                        answer: true,
                                         question: question);
                                     answer.add(newAnswer);
                                   } else {
