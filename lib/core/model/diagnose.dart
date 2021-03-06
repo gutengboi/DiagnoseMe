@@ -32,13 +32,78 @@ class Answer {
   bool answer;
   double weight;
   String question;
+
   Answer(
       {this.symptomId,
       this.ailmentId,
       this.answer,
       this.weight,
       @required this.question});
+
+  Answer.fromJson(Map<String, dynamic> json) {
+    symptomId = json['symptomId'];
+    ailmentId = json['ailmentId'];
+    answer = json['answer'];
+    weight = json['weight'];
+    question = json['question'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['symptomId'] = this.symptomId;
+    data['ailmentId'] = this.ailmentId;
+    data['answer'] = this.answer;
+    data['weight'] = this.weight;
+    data['question'] = this.weight;
+    // data['id'] = this.id;
+    return data;
+  }
 }
+
+class ResponseString {
+  List<Answer> responseJSON;
+  int id;
+
+  ResponseString({this.responseJSON, this.id});
+
+  ResponseString.fromJson(Map<String, dynamic> json) {
+    if (json['responseJSON'] != null) {
+      responseJSON = new List<Answer>();
+      json['responseJSON'].forEach((v) {
+        responseJSON.add(new Answer.fromJson(v));
+      });
+    }
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.responseJSON != null) {
+      data['challenges'] = this.responseJSON.map((v) => v.toJson()).toList();
+    }
+    data['id'] = this.id;
+    return data;
+  }
+}
+
+// class ResponseString {
+//   int id;
+//   List<Answer> responseJSON;
+//
+//   ResponseString({this.id, this.responseJSON});
+//
+//   ResponseString.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     responseJSON = json['responseJSON'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = this.id;
+//     data['responseJSON'] = this.responseJSON;
+//     return data;
+//   }
+// }
 
 List<AILMENT> ailmentItems = [
   AILMENT(

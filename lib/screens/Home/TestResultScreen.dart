@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:blinking_text/blinking_text.dart';
 import 'package:diagnose_me/core/model/diagnose.dart';
 import 'package:diagnose_me/core/themes/AppColors.dart';
+import 'package:diagnose_me/core/util/DatabaseHelper.dart';
 import 'package:flutter/material.dart';
 
 class TestResultScreen extends StatefulWidget {
-  List<Answer> response;
+  final List<Answer> response;
   TestResultScreen({this.response});
 
   @override
@@ -13,9 +16,31 @@ class TestResultScreen extends StatefulWidget {
 
 class _TestResultScreenState extends State<TestResultScreen> {
   @override
+  void initState() {
+    super.initState();
+
+    var resp = DBProvider.db.insert({
+      'responseJSON': jsonEncode(widget.response).toString(),
+    });
+
+    // for (var _answer in widget.response) {
+    //   var resp = DBProvider.db.insert({
+    //     'symptomId': _answer.symptomId,
+    //     'ailmentId': _answer.ailmentId,
+    //     'answer': _answer.answer ? 1 : 0,
+    //     'question': _answer.question,
+    //     'weight': _answer.weight,
+    //   });
+
+    print("::::::::$resp::::::::::::");
+    // }
+  }
+
+  @override
   Widget build(BuildContext context) {
     int id = widget.response.first.ailmentId;
     AILMENT ailment = ailmentItems.where((element) => element.id == id).single;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -96,10 +121,17 @@ class _TestResultScreenState extends State<TestResultScreen> {
                 ),
                 corvidInfoCard(ailment),
                 SizedBox(
-                  height: 40,
-                ),
-                SizedBox(
                   height: 18,
+                ),
+                Center(
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                    child: Text("CLOSE",
+                        style: TextStyle(
+                            fontFamily: 'SourceSansPro', color: Colors.red)),
+                  ),
                 ),
                 SizedBox(
                   height: 50,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:diagnose_me/core/model/diagnose.dart';
 import 'package:diagnose_me/core/util/Constant.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -25,6 +26,8 @@ class DBProvider {
       await db.execute("DROP TABLE IF EXISTS ${Constant.AILMENTS}");
       await db.execute("DROP TABLE IF EXISTS ${Constant.CAUSES}");
       await db.execute("DROP TABLE IF EXISTS ${Constant.SYMPTOMS}");
+      await db.execute("DROP TABLE IF EXISTS ${Constant.SYMPTOMS}");
+      await db.execute("DROP TABLE IF EXISTS ${Constant.history}");
       _onCreate(db, newVersion);
     }
   }
@@ -64,6 +67,20 @@ class DBProvider {
         "causeName TEXT,"
         "ailmentid INTEGER"
         ")");
+
+    // await db.execute("CREATE TABLE IF NOT EXISTS ${Constant.history} ("
+    //     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    //     "symptomId INTEGER,"
+    //     "ailmentId INTEGER,"
+    //     "answer INTEGER,"
+    //     "weight TEXT,"
+    //     "question TEXT"
+    //     ")");
+
+    await db.execute("CREATE TABLE IF NOT EXISTS ${Constant.history} ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "responseJSON TEXT"
+        ")");
   }
 
   // Future<String> getCustomerString(User user) async {
@@ -82,14 +99,19 @@ class DBProvider {
   //     return null;
   //   }
   // }
-  //
-  // insert(User user) async {
-  //   final db = await database;
-  //   var raw = await db.insert(Constant.PROFILE_TABLE, user.toJson());
-  //   print("after insert :: $raw");
-  //   print("Before Insert ::: ${user.toJson()}");
-  //   return raw;
-  // }
+
+  Future<List<Map<String, dynamic>>> queryAllRows() async {
+    Database db = await database;
+    return await db.query(Constant.history);
+  }
+
+  insert(Map<String, Object> data) async {
+    final db = await database;
+    var raw = await db.insert(Constant.history, data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return raw;
+  }
+
   //
   // insertRequestType(GetType type) async {
   //   print("eBefore Insert request type ::: ${type.toJson()}");

@@ -11,4 +11,5 @@ class Constant {
   static get DOSAGE => "dosage";
 
   static get prevention => "requestType";
+  static get history => "history";
 }

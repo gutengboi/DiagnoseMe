@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:diagnose_me/core/model/diagnose.dart';
 import 'package:diagnose_me/core/themes/AppColors.dart';
 import 'package:diagnose_me/screens/Diagnose/DiagnoseScreen.dart';
+import 'package:diagnose_me/screens/Home/DiagnoseHistoryScreen.dart';
 import 'package:diagnose_me/screens/Home/TestResultScreen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -388,7 +389,9 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           return InkWell(
               onTap: () {
-                if (index == 0) {}
+                if (index == 0) {
+                  displayDiagnoseHistoryScreen();
+                }
               },
               child: menuRow(index));
         },
@@ -474,6 +477,11 @@ class _HomeScreenState extends State<HomeScreen> {
   displayDiagnoseScreen() async {
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => DiagnoseScreen()));
+  }
+
+  displayDiagnoseHistoryScreen() async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => DiagnoseHistoryScreen()));
   }
 
 //   Widget termAndConditon(BuildContext context) {
