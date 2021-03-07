@@ -743,7 +743,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ailmentId: symptoms.ailmentid,
                                         symptomId: symptoms.id,
                                         weight: symptoms.weight,
-                                        response: 1,
+                                        answer: true,
                                         question: question);
                                     answer.add(newAnswer);
                                   } else {
@@ -756,12 +756,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         _symptoms.length) {
                                       print(":::::I AM INSIDE 1");
                                       for (var i in answer) {
-                                        if (i.response == 1) {
+                                        if (i.answer) {
                                           positiveWeight += i.weight;
-                                          positive.add(true);
+                                          positive.add(i.answer);
                                         } else {
                                           negativeWeight += i.weight;
-                                          negative.add(false);
+                                          negative.add(i.answer);
                                         }
                                       }
                                       if (positive.length == negative.length) {
@@ -831,12 +831,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }
                                     } else {
                                       for (var i in answer) {
-                                        if (i.response == 1) {
+                                        if (i.answer) {
                                           positiveWeight += i.weight;
-                                          positive.add(true);
+                                          positive.add(i.answer);
                                         } else {
                                           negativeWeight += i.weight;
-                                          negative.add(false);
+                                          negative.add(i.answer);
                                         }
                                       }
                                       if (positive.length == negative.length) {
@@ -950,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ailmentId: symptoms.ailmentid,
                                         symptomId: symptoms.id,
                                         weight: symptoms.weight,
-                                        response: 0,
+                                        answer: false,
                                         question: question);
                                     answer.add(newAnswer);
                                   } else {
@@ -963,7 +963,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         _symptoms.length) {
                                       print(":::::I AM INSIDE 1");
                                       for (var i in answer) {
-                                        if (i.response == 1) {
+                                        if (i.answer) {
                                           positiveWeight += i.weight;
                                           positive.add(true);
                                         } else {
@@ -1034,16 +1034,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       )));
                                         } else {
                                           print("::::KOLEYEWON:::");
+                                          setState(() {
+                                            answer.clear();
+                                            int random = Random()
+                                                .nextInt(symptomsItems.length);
+                                            symptoms =
+                                                symptomsItems.elementAt(random);
+                                            String questionItems =
+                                                symptoms.symptomsName;
+                                            question = questionItems;
+                                          });
                                         }
                                       }
                                     } else {
                                       for (var i in answer) {
-                                        if (i.response == 1) {
+                                        if (i.answer) {
                                           positiveWeight += i.weight;
-                                          positive.add(true);
+                                          positive.add(i.answer);
                                         } else {
                                           negativeWeight += i.weight;
-                                          negative.add(false);
+                                          negative.add(i.answer);
                                         }
                                       }
                                       if (positive.length == negative.length) {
@@ -1109,6 +1119,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       )));
                                         } else {
                                           print("::::KOLEYEWON:::");
+                                          setState(() {
+                                            answer.clear();
+                                            int random = Random()
+                                                .nextInt(symptomsItems.length);
+                                            symptoms =
+                                                symptomsItems.elementAt(random);
+                                            String questionItems =
+                                                symptoms.symptomsName;
+                                            question = questionItems;
+                                          });
                                         }
                                       }
                                     }

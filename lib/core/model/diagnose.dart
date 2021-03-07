@@ -31,21 +31,21 @@ class SYMPTOM {
 class Answer {
   int symptomId;
   int ailmentId;
-  int response;
+  bool answer;
   double weight;
   String question;
 
   Answer(
       {this.symptomId,
       this.ailmentId,
-      this.response,
+      this.answer,
       this.weight,
       this.question});
 
   Answer.fromJson(Map<String, dynamic> json) {
     symptomId = json["symptomId"];
     ailmentId = json['ailmentId'];
-    response = json['response'];
+    answer = json['answer'];
     weight = json['weight'];
     question = json['question'];
   }
@@ -54,7 +54,7 @@ class Answer {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['symptomId'] = this.symptomId;
     data['ailmentId'] = this.ailmentId;
-    data['response'] = this.response;
+    data['answer'] = this.answer;
     data['weight'] = this.weight;
     data['question'] = this.question;
     // data['id'] = this.id;

@@ -206,8 +206,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
                   Container(
                       margin: EdgeInsets.only(top: 10, bottom: 10),
                       height: 20,
-                      child: keyValueLabel(
-                          t.question, t.response == 1 ? "YES" : "NO")),
+                      child:
+                          keyValueLabel(t.question, t.answer ? "YES" : "NO")),
                 ],
               ),
             SizedBox(
