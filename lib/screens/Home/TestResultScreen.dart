@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 
 class TestResultScreen extends StatefulWidget {
   final List<Answer> response;
-  TestResultScreen({this.response});
+  final bool donotInsert;
+  TestResultScreen({this.response, this.donotInsert = false});
 
   @override
   _TestResultScreenState createState() => _TestResultScreenState();
@@ -18,22 +19,11 @@ class _TestResultScreenState extends State<TestResultScreen> {
   @override
   void initState() {
     super.initState();
-
-    var resp = DBProvider.db.insert({
-      'responseJSON': jsonEncode(widget.response).toString(),
-    });
-
-    // for (var _answer in widget.response) {
-    //   var resp = DBProvider.db.insert({
-    //     'symptomId': _answer.symptomId,
-    //     'ailmentId': _answer.ailmentId,
-    //     'answer': _answer.answer ? 1 : 0,
-    //     'question': _answer.question,
-    //     'weight': _answer.weight,
-    //   });
-
-    print("::::::::$resp::::::::::::");
-    // }
+    if (widget.donotInsert == false) {
+      ResponseString responseString =
+          ResponseString(responseJSON: widget.response);
+      var resp = DBProvider.db.rawInsert(responseString);
+    }
   }
 
   @override
@@ -216,8 +206,8 @@ class _TestResultScreenState extends State<TestResultScreen> {
                   Container(
                       margin: EdgeInsets.only(top: 10, bottom: 10),
                       height: 20,
-                      child:
-                          keyValueLabel(t.question, t.answer ? "YES" : "NO")),
+                      child: keyValueLabel(
+                          t.question, t.response == 1 ? "YES" : "NO")),
                 ],
               ),
             SizedBox(

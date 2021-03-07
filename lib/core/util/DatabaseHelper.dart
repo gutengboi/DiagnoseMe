@@ -12,7 +12,7 @@ class DBProvider {
 
   Database _database;
   int dbVersion =
-      6; //change the version,when you make changes to the  database before push
+      1; //change the version,when you make changes to the  database before push
 
   Future<Database> get database async {
     if (_database != null) return _database;
@@ -23,10 +23,6 @@ class DBProvider {
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < newVersion) {
-      await db.execute("DROP TABLE IF EXISTS ${Constant.AILMENTS}");
-      await db.execute("DROP TABLE IF EXISTS ${Constant.CAUSES}");
-      await db.execute("DROP TABLE IF EXISTS ${Constant.SYMPTOMS}");
-      await db.execute("DROP TABLE IF EXISTS ${Constant.SYMPTOMS}");
       await db.execute("DROP TABLE IF EXISTS ${Constant.history}");
       _onCreate(db, newVersion);
     }
@@ -47,26 +43,26 @@ class DBProvider {
 
   void _onCreate(Database db, int version) async {
     print('creating ... version => $version');
-    await db.execute("CREATE TABLE IF NOT EXISTS ${Constant.AILMENTS} ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "ailmentName TEXT,"
-        "treatment TEXT,"
-        "prevention TEXT,"
-        "dosage TEXT"
-        ")");
-
-    await db.execute("CREATE TABLE ${Constant.SYMPTOMS} ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "symptomsName TEXT,"
-        "weight TEXT"
-        "almentId INTEGER"
-        ")");
-
-    await db.execute("CREATE TABLE ${Constant.CAUSES} ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "causeName TEXT,"
-        "ailmentid INTEGER"
-        ")");
+    // await db.execute("CREATE TABLE IF NOT EXISTS ${Constant.AILMENTS} ("
+    //     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    //     "ailmentName TEXT,"
+    //     "treatment TEXT,"
+    //     "prevention TEXT,"
+    //     "dosage TEXT"
+    //     ")");
+    //
+    // await db.execute("CREATE TABLE ${Constant.SYMPTOMS} ("
+    //     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    //     "symptomsName TEXT,"
+    //     "weight TEXT"
+    //     "almentId INTEGER"
+    //     ")");
+    //
+    // await db.execute("CREATE TABLE ${Constant.CAUSES} ("
+    //     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    //     "causeName TEXT,"
+    //     "ailmentid INTEGER"
+    //     ")");
 
     // await db.execute("CREATE TABLE IF NOT EXISTS ${Constant.history} ("
     //     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -78,7 +74,6 @@ class DBProvider {
     //     ")");
 
     await db.execute("CREATE TABLE IF NOT EXISTS ${Constant.history} ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "responseJSON TEXT"
         ")");
   }
@@ -100,15 +95,49 @@ class DBProvider {
   //   }
   // }
 
-  Future<List<Map<String, dynamic>>> queryAllRows() async {
+  Future<List<String>> queryAllRows() async {
+    List<String> responseString;
     Database db = await database;
-    return await db.query(Constant.history);
+    List<Map> result = await db.query(Constant.history);
+    List<String> list = new List();
+    print(":::customObject1 :::${result.last}::::::");
+    for (int i = 0; i < result.length; i++) {
+      print(":::responseJSON :::${result[i]['responseJSON']}::::::");
+      String respObj = result[i]['responseJSON'];
+      list.add(respObj);
+    }
+    return list;
   }
 
-  insert(Map<String, Object> data) async {
+  // Future<List<ResponseString>> queryAllRowsInTheTable() async {
+  //   Database db = await database;
+  //   return await db.query(Constant.history);
+  // }
+
+  Future<List<Map<String, dynamic>>> queryAllRowsInTheTable() async {
+    Database db = await database;
+    List<Map> map = await db.query(Constant.history);
+    print(":::map::::: ${map.length}");
+    print(":::jsonEncode map::::: ${jsonEncode(map)}");
+    return map;
+  }
+
+  rawInsert(ResponseString resp) async {
+    String sql =
+        "INSERT INTO ${Constant.history}(responseJSON) VALUES(\"${resp.toJson()}\")";
     final db = await database;
-    var raw = await db.insert(Constant.history, data,
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    int rawtext = await db.rawInsert(sql);
+    print('sql: $sql');
+    print('inserted2: $rawtext');
+  }
+
+  insert(ResponseString responseString) async {
+    print("responseString::::: ${responseString.toJson()}");
+    final db = await database;
+    var raw = await db.insert(Constant.history, responseString.toJson());
+
+    /// conflictAlgorithm: ConflictAlgorithm.replace);
+
     return raw;
   }
 

@@ -6,12 +6,32 @@ import 'package:diagnose_me/core/util/Constant.dart';
 import 'package:diagnose_me/core/util/DatabaseHelper.dart';
 import 'package:flutter/material.dart';
 
+import 'TestResultScreen.dart';
+
 class DiagnoseHistoryScreen extends StatefulWidget {
   @override
   _DiagnoseHistoryScreenState createState() => _DiagnoseHistoryScreenState();
 }
 
 class _DiagnoseHistoryScreenState extends State<DiagnoseHistoryScreen> {
+  List<String> responseObj = List();
+  List<ResponseString> respObjString = List<ResponseString>();
+  @override
+  void initState() {
+    super.initState();
+
+    DBProvider.db.queryAllRows().then((value) {
+      responseObj = value;
+    });
+    for (int i = 1; i < responseObj.length; i++) {
+      ResponseString responseString =
+          ResponseString.fromJson(jsonDecode(responseObj[i]));
+      print("$i");
+      print(":::initState:::${responseString.toJson()}");
+      respObjString.add(responseString);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,99 +40,107 @@ class _DiagnoseHistoryScreenState extends State<DiagnoseHistoryScreen> {
       child: Scaffold(
         backgroundColor: AppColors.primary15,
         body: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              child: Text(
-                                "Hi Arbeeorlar",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 25),
-                              ),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 20,
                             ),
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              child: Text("See the History of your Diagnose",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 9)),
-                            )
-                          ],
-                        ),
+                            child: Text(
+                              "Hi Arbeeorlar",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 25),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            child: Text("See the History of your Diagnose",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 9)),
+                          )
+                        ],
                       ),
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.all(5),
+                    ),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            child: IconButton(
+                              icon: Icon(Icons.notifications),
+                              color: Colors.white,
+                              onPressed: () {},
+                            ),
+                          ),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            margin: EdgeInsets.all(5),
+                            child: CircleAvatar(
+                              radius: 20.0,
                               child: IconButton(
-                                icon: Icon(Icons.notifications),
+                                icon: Icon(Icons.account_box_outlined),
                                 color: Colors.white,
                                 onPressed: () {},
                               ),
                             ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: CircleAvatar(
-                                radius: 20.0,
-                                child: IconButton(
-                                  icon: Icon(Icons.account_box_outlined),
-                                  color: Colors.white,
-                                  onPressed: () {},
-                                ),
-                              ),
-                            ),
-                            // Container(
-                            //   width: 40,
-                            //   height: 40,
-                            //   margin: EdgeInsets.all(5),
-                            //   child: CircleAvatar(
-                            //     radius: 20.0,
-                            //     backgroundImage: AssetImage("images/dp.png"),
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                          ),
+                          // Container(
+                          //   width: 40,
+                          //   height: 40,
+                          //   margin: EdgeInsets.all(5),
+                          //   child: CircleAvatar(
+                          //     radius: 20.0,
+                          //     backgroundImage: AssetImage("images/dp.png"),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(height: 80, child: setListView2()),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(child: setListView2()),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget testKitCard(BuildContext context) {
+  Widget testKitCard(BuildContext context, List<Answer> answer) {
+    //  int id = answer.first.ailmentId;
+    //AILMENT ailment = ailmentItems.where((element) => element.id == id).single;
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TestResultScreen(
+                      response: answer,
+                      donotInsert: true,
+                    )));
+      },
       child: Container(
         // width: MediaQuery.of(context).size.width,
         height: 65,
@@ -150,19 +178,18 @@ class _DiagnoseHistoryScreenState extends State<DiagnoseHistoryScreen> {
                             horizontal: 5,
                           ),
                           child: Text(
-                            "Diagnose",
+                            "ailment.ailmentName",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
-                                fontSize: 20),
+                                fontSize: 15),
                           ),
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(
                             horizontal: 5,
                           ),
-                          child: Text(
-                              "Perform your covid 19 testing by filling the test kit and get instant result",
+                          child: Text("------",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 9)),
                         )
@@ -186,48 +213,79 @@ class _DiagnoseHistoryScreenState extends State<DiagnoseHistoryScreen> {
 
   //final dataList = await DBHelper.getData('user_places');
 
-  List<ResponseString> getData() {
-    List<Answer> answers;
-    List<ResponseString> responseString;
-    var histories = DBProvider.db.queryAllRows();
-    Iterable i;
-    if (histories != null) {
-      print(":::::${histories.toString()}");
-      histories.then((value) {
-        i = value;
-      });
-      responseString =
-          i.map((model) => ResponseString.fromJson(model)).toList();
-      return responseString;
-    } else {
-      return responseString = null;
-    }
+  // Future<List<ResponseString>> getData() async {
+  //   List<ResponseString> responseString = List();
+  //   responseString = await DBProvider.db.queryAllRows();
+  //   print("::::snapshot:::::${responseString.toList().length}:");
+  //   return responseString;
+  // }
+
+  getExistingUserProfile() async {
+    List<ResponseString1> responseString = List<ResponseString1>();
+    var userData = await DBProvider.db.queryAllRows();
+    Iterable i = userData;
+    //Iterable i = userData['result'];
+    print("get2FAResponseObject  ${jsonEncode(userData)}");
+    return userData;
+    // if (userData.length > 0) {
+    //   ResponseString1 resp = ResponseString1.fromJson(userData);
+    //
+    //   print("get2FAResponseObject  ${resp.toJson()}");
+    //
+    //   // List<ResponseString> tagObjs =
+    //   //     userData.map((tagJson) => ResponseString.fromJson(tagJson)).toList();
+    //   print("${jsonEncode(resp)}");
+    //   return resp;
+    // } else {
+    //   return null;
+    // }
   }
+
+  // UserDetail _userDetail = UserDetail();
+  // User _user;
+  // try {
+  // List<Map<String, dynamic>> userData =
+  // await DBProvider.db.queryAllRows(Constant.PROFILE_TABLE);
+  // if (userData.length > 0) {
+  // _user = User.fromJson(userData.last);
 
   Widget setListView2() {
-    return getData().length > 0
-        ? Container(
-            height: 60,
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: DBProvider.db.queryAllRowsInTheTable(),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          print("::response::::${snapshot.data.length}::::response::");
+          return Container(
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: getData().length,
+              scrollDirection: Axis.vertical,
+              itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
-                return InkWell(onTap: () {}, child: testKitCard(context));
+                print(
+                    "::responseJSON::::${jsonEncode(snapshot.data[index]['responseJSON'])}::::responseJSON::");
+                var jsonDecodeObj =
+                    jsonDecode(snapshot.data[index]['responseJSON']);
+                ResponseString string = ResponseString.fromJson(jsonDecodeObj);
+
+                return InkWell(onTap: () {}, child: testKitCard(context, null));
               },
             ),
-          )
-        : Container();
-  }
-
-  Widget setListView() {
-    return Container(
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return testKitCard(
-              context); //InkWell(onTap: () {}, child: menuRow(index));
-        },
-      ),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
+
+  // Widget setListView() {
+  //   return Container(
+  //     child: ListView.builder(
+  //       itemCount: 10,
+  //       itemBuilder: (context, index) {
+  //         return testKitCard(
+  //             context); //InkWell(onTap: () {}, child: menuRow(index));
+  //       },
+  //     ),
+  //   );
+  // }
 }

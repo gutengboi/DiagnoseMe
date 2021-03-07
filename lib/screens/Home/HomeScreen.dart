@@ -743,7 +743,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ailmentId: symptoms.ailmentid,
                                         symptomId: symptoms.id,
                                         weight: symptoms.weight,
-                                        answer: true,
+                                        response: 1,
                                         question: question);
                                     answer.add(newAnswer);
                                   } else {
@@ -756,12 +756,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         _symptoms.length) {
                                       print(":::::I AM INSIDE 1");
                                       for (var i in answer) {
-                                        if (i.answer) {
+                                        if (i.response == 1) {
                                           positiveWeight += i.weight;
-                                          positive.add(i.answer);
+                                          positive.add(true);
                                         } else {
                                           negativeWeight += i.weight;
-                                          negative.add(i.answer);
+                                          negative.add(false);
                                         }
                                       }
                                       if (positive.length == negative.length) {
@@ -831,12 +831,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }
                                     } else {
                                       for (var i in answer) {
-                                        if (i.answer) {
+                                        if (i.response == 1) {
                                           positiveWeight += i.weight;
-                                          positive.add(i.answer);
+                                          positive.add(true);
                                         } else {
                                           negativeWeight += i.weight;
-                                          negative.add(i.answer);
+                                          negative.add(false);
                                         }
                                       }
                                       if (positive.length == negative.length) {
@@ -950,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ailmentId: symptoms.ailmentid,
                                         symptomId: symptoms.id,
                                         weight: symptoms.weight,
-                                        answer: false,
+                                        response: 0,
                                         question: question);
                                     answer.add(newAnswer);
                                   } else {
@@ -963,12 +963,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         _symptoms.length) {
                                       print(":::::I AM INSIDE 1");
                                       for (var i in answer) {
-                                        if (i.answer) {
+                                        if (i.response == 1) {
                                           positiveWeight += i.weight;
-                                          positive.add(i.answer);
+                                          positive.add(true);
                                         } else {
                                           negativeWeight += i.weight;
-                                          negative.add(i.answer);
+                                          negative.add(false);
                                         }
                                       }
                                       if (positive.length == negative.length) {
@@ -1038,12 +1038,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }
                                     } else {
                                       for (var i in answer) {
-                                        if (i.answer) {
+                                        if (i.response == 1) {
                                           positiveWeight += i.weight;
-                                          positive.add(i.answer);
+                                          positive.add(true);
                                         } else {
                                           negativeWeight += i.weight;
-                                          negative.add(i.answer);
+                                          negative.add(false);
                                         }
                                       }
                                       if (positive.length == negative.length) {

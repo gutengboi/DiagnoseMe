@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 class AILMENT {
   int id;
@@ -26,24 +27,25 @@ class SYMPTOM {
   SYMPTOM({this.id, this.symptomsName, this.weight, this.ailmentid});
 }
 
+@JsonSerializable()
 class Answer {
   int symptomId;
   int ailmentId;
-  bool answer;
+  int response;
   double weight;
   String question;
 
   Answer(
       {this.symptomId,
       this.ailmentId,
-      this.answer,
+      this.response,
       this.weight,
-      @required this.question});
+      this.question});
 
   Answer.fromJson(Map<String, dynamic> json) {
-    symptomId = json['symptomId'];
+    symptomId = json["symptomId"];
     ailmentId = json['ailmentId'];
-    answer = json['answer'];
+    response = json['response'];
     weight = json['weight'];
     question = json['question'];
   }
@@ -52,39 +54,79 @@ class Answer {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['symptomId'] = this.symptomId;
     data['ailmentId'] = this.ailmentId;
-    data['answer'] = this.answer;
+    data['response'] = this.response;
     data['weight'] = this.weight;
-    data['question'] = this.weight;
+    data['question'] = this.question;
     // data['id'] = this.id;
     return data;
   }
 }
 
-class ResponseString {
-  List<Answer> responseJSON;
-  int id;
+@JsonSerializable()
+class ResponseString1 {
+  ResponseString responseJSON;
 
-  ResponseString({this.responseJSON, this.id});
+  ResponseString1({this.responseJSON});
 
-  ResponseString.fromJson(Map<String, dynamic> json) {
-    if (json['responseJSON'] != null) {
-      responseJSON = new List<Answer>();
-      json['responseJSON'].forEach((v) {
-        responseJSON.add(new Answer.fromJson(v));
-      });
-    }
-    id = json['id'];
+  ResponseString1.fromJson(Map<String, dynamic> json) {
+    responseJSON = json['responseJSON'] != null
+        ? new ResponseString.fromJson(json['ResponseString'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.responseJSON != null) {
-      data['challenges'] = this.responseJSON.map((v) => v.toJson()).toList();
+      data['responseJSON'] = this.responseJSON.toJson();
     }
-    data['id'] = this.id;
     return data;
   }
 }
+
+@JsonSerializable()
+class ResponseString {
+  List<Answer> responseJSON;
+
+  ResponseString({this.responseJSON});
+
+  ResponseString.fromJson(Map<String, dynamic> json) {
+    //id = json['id'];
+    if (json["responseJSON"] != null) {
+      responseJSON = new List<Answer>();
+      json["responseJSON"].forEach((v) {
+        responseJSON.add(new Answer.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    //data['id'] = this.id;
+    if (this.responseJSON != null) {
+      data["responseJSON"] = this.responseJSON.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+// class ResponseJSON {
+//   String name;
+//   int quantity;
+//
+//   ResponseJSON({this.name, this.quantity});
+//
+//   ResponseJSON.fromJson(Map<String, dynamic> json) {
+//     name = json['name'];
+//     quantity = json['quantity'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['name'] = this.name;
+//     data['quantity'] = this.quantity;
+//     return data;
+//   }
+// }
 
 // class ResponseString {
 //   int id;
